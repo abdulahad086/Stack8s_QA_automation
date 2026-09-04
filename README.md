@@ -6,7 +6,7 @@ Target Environment: [https://develop-v2.stack8s.com/](https://develop-v2.stack8s
 
 ---
 
-## 🏗 Framework Architecture
+##  Framework Architecture
 
 ```text
 Stack8s_automation/
@@ -59,7 +59,7 @@ Stack8s_automation/
 
 ---
 
-## 🏷 Test Tags & Coverage
+##  Test Tags & Coverage
 
 Tests are categorized using Playwright tags:
 - **`@smoke`**: Critical path smoke tests (Login, Page load, Core navigation, Kubeconfig download, Connect Repo modal, Workload Wizard, Install Modal, Docker Access, Member Modal).
@@ -98,7 +98,7 @@ npm run test:headed
 
 ---
 
-## 📊 Summary of Automated Modules (86 / 86 Passed - 100%)
+##  Summary of Automated Modules (86 / 86 Passed - 100%)
 
 1. **Authentication (`tests/auth/login.spec.ts`)**: 8 tests covering UI elements, field editability, security password masking, empty form validation, invalid credentials error handling, malformed email validation, and forgot-password/sign-up navigation.
 2. **Global & Stack Resources (`tests/resources/`)**: 8 tests covering total cluster metrics, Longhorn storage volumes, dynamic API vs UI matching, and 8 stack-specific sub-routes navigation (`cost-figures`, `advanced`, `database`, `data-analytics`, `storage`, `endpoints`, `custom-apps`, `llm-marketplace`).
@@ -116,7 +116,7 @@ npm run test:headed
 
 ---
 
-## 🚀 Performance & Load Testing Framework (k6)
+##  Performance & Load Testing Framework (k6)
 
 The project includes an **automated API Load & Performance Testing Suite** powered by **k6**. It tests application response times, error rates, and throughput under concurrent Virtual Users (VUs) before release.
 
@@ -134,7 +134,7 @@ Or run directly using the bash script:
 ./performance/run.sh
 ```
 
-### 📋 Available Commands
+###  Available Commands
 
 | Command | Purpose | Profile |
 |---------|---------|---------|
@@ -142,24 +142,24 @@ Or run directly using the bash script:
 | `npm run test:performance:smoke` | Fast smoke verification | 1 VU (10 seconds) |
 | `npm run test:performance:load` | Sustained load test | 10 VUs (1 minute) |
 
-### 📊 Performance Reports & SLAs
+###  Performance Reports & SLAs
 
 After execution, interactive reports are saved to `performance/reports/`:
 - **HTML Visual Dashboard**: `performance/reports/performance_report.html`
 - **JSON Raw Metrics**: `performance/reports/summary.json`
 
 **Default SLA Targets:**
-- ⏱️ **p(95) Response Time**: `< 1500 ms`
-- ❌ **HTTP Error Rate**: `< 10%`
-- ✅ **Checks Pass Rate**: `> 85%`
+-  **p(95) Response Time**: `< 1500 ms`
+-  **HTTP Error Rate**: `< 10%`
+-  **Checks Pass Rate**: `> 85%`
 
 ### 📧 Automated QA Defect Email Alerts (`utils/email-reporter.ts`)
 
 The framework includes an **Automated Email Defect Alert System**. Whenever any test fails during execution, an HTML email report is formatted and dispatched to the Team Lead & QA team containing:
-- 🚨 **Defect Summary & Module Name**
-- ❌ **Exact Error Traceback & Stack Lines**
-- 📊 **Execution Metrics** (Total, Passed, Failed, Pass Rate %)
-- ⏱️ **Execution Duration**
+-  **Defect Summary & Module Name**
+-  **Exact Error Traceback & Stack Lines**
+-  **Execution Metrics** (Total, Passed, Failed, Pass Rate %)
+-  **Execution Duration**
 
 **To enable email alerts**, add your SMTP credentials to `.env`:
 ```env
