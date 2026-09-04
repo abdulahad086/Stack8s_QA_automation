@@ -1,0 +1,54 @@
+name: Stack8s Performance Testing (k6)
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      vus:
+        description: 'Number of Virtual Users'
+        required: false
+        default: '10'
+      duration:
+        description: 'Duration (e.g. 30s, 1m)'
+        required: false
+        default: '30s'
+
+jobs:
+  performance-test:
+    name: k6 Load & SLA Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Run k6 Performance Test Suite
+        env:
+          BASE_URL: ${{ secrets.BASE_URL || 'https://develop-v2.stack8s.com' }}
+          STACK8S_USER: ${{ secrets.STACK8S_USER || 'jon@stack8s.com' }}
+          STACK8S_PASSWORD: ${{ secrets.STACK8S_PASSWORD || 'Abc@1234' }}
+        run: |
+          chmod +x ./performance/run.sh
+          ./performance/run.sh
+
+      - name: Upload Performance Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-performance-report
+          path: |
+            performance/reports/performance_report.html
+            performance/reports/summary.json

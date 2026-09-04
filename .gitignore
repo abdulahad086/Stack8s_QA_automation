@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Playwright artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Performance test reports (generated)
+performance/reports/*.html
+performance/reports/*.json
+!performance/reports/.gitkeep
+
+# Auth state (contains session tokens)
+auth/
+
+# Environment variables (contains secrets)
+.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.dbplaywright/.auth/

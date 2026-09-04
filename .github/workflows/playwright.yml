@@ -1,0 +1,61 @@
+name: Stack8s E2E & API Playwright Test Automation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run nightly build every day at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      grep_tag:
+        description: 'Test Filter Tag (e.g. @smoke, @functional, @api, @regression)'
+        required: false
+        default: ''
+
+jobs:
+  playwright-tests:
+    name: Playwright E2E & API Test Execution
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Browsers & System Dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E & API Test Suite
+        env:
+          CI: 'true'
+          BASE_URL: ${{ secrets.BASE_URL || 'https://develop-v2.stack8s.com' }}
+          STACK8S_USER: ${{ secrets.STACK8S_USER || 'jon@stack8s.com' }}
+          STACK8S_PASSWORD: ${{ secrets.STACK8S_PASSWORD || 'Abc@1234' }}
+        run: |
+          if [ -n "${{ github.event.inputs.grep_tag }}" ]; then
+            npx playwright test --grep "${{ github.event.inputs.grep_tag }}"
+          else
+            npm test
+          fi
+
+      - name: Upload Playwright HTML & Trace Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30

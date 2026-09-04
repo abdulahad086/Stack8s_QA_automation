@@ -1,0 +1,44 @@
+{
+  "name": "stack8s-qa-automation",
+  "version": "1.0.0",
+  "description": "Stack8s Playwright E2E Automation Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:functional": "npx playwright test --grep @functional",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:headed": "npx playwright test --headed",
+    "test:auth": "npx playwright test tests/auth/",
+    "test:apps": "npx playwright test tests/apps/",
+    "test:custom-apps": "npx playwright test tests/custom_apps/",
+    "test:templates": "npx playwright test tests/templates/",
+    "test:registry": "npx playwright test tests/registry/",
+    "test:stacks": "npx playwright test tests/stacks/",
+    "test:cost-figures": "npx playwright test tests/cost_figures/",
+    "test:monitoring": "npx playwright test tests/monitoring/",
+    "test:settings": "npx playwright test tests/settings/",
+    "test:report": "npx playwright show-report",
+    "test:api": "npx playwright test tests/api/",
+    "test:performance": "./performance/run.sh",
+    "test:performance:smoke": "k6 run --vus 1 --duration 10s performance/main.js",
+    "test:performance:load": "k6 run --vus 10 --duration 1m performance/main.js",
+    "test:all": "npm test && npm run test:performance"
+  },
+  "keywords": [
+    "stack8s",
+    "playwright",
+    "e2e",
+    "testing",
+    "qa"
+  ],
+  "author": "QA Automation Engineer",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/nodemailer": "^8.0.1",
+    "dotenv": "^17.4.2",
+    "nodemailer": "^10.0.0",
+    "typescript": "^7.0.2"
+  }
+}
